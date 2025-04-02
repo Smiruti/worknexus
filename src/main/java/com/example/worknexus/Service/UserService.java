@@ -53,4 +53,19 @@ public class UserService {
     public List<User> viewAllUsers() {
         return userRepository.findAll();
     }
+
+    public String updateUserRole(Long id, String role) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (!role.equalsIgnoreCase("EMPLOYEE") && !role.equalsIgnoreCase("ADMIN")) {
+                return "Invalid role. Allowed values: EMPLOYEE or ADMIN";
+            }
+            user.setRole(role.toUpperCase());
+            userRepository.save(user);
+            return "User role updated successfully";
+        }
+        return "User not found";
+    }
+
 }

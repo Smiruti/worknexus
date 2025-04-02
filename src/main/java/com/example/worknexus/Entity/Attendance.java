@@ -1,7 +1,7 @@
 package com.example.worknexus.Entity;
 
 import jakarta.persistence.*;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,19 +10,26 @@ public class Attendance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     private LocalDateTime clockIn;
     private LocalDateTime clockOut;
 
-    public Attendance() {
+    @Column(nullable = false)
+    private LocalDate attendanceDate;  // Stores only the date
 
-    }
+    @Column(nullable = false)
+    private String status;  // "PRESENT" or "ABSENT"
 
-    public Attendance(Long id, Long userId, LocalDateTime clockIn, LocalDateTime clockOut) {
-        this.id = id;
-        this.userId = userId;
+    public Attendance() {}
+
+    public Attendance(User user, LocalDateTime clockIn, String status) {
+        this.user = user;
         this.clockIn = clockIn;
-        this.clockOut = clockOut;
+        this.attendanceDate = LocalDate.now();
+        this.status = status;
     }
 
     public Long getId() {
@@ -33,12 +40,12 @@ public class Attendance {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getClockIn() {
@@ -55,5 +62,21 @@ public class Attendance {
 
     public void setClockOut(LocalDateTime clockOut) {
         this.clockOut = clockOut;
+    }
+
+    public LocalDate getAttendanceDate() {
+        return attendanceDate;
+    }
+
+    public void setAttendanceDate(LocalDate attendanceDate) {
+        this.attendanceDate = attendanceDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

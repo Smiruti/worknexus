@@ -14,6 +14,7 @@ public class AttendanceController {
     @Autowired
     private AttendanceService attendanceService;
 
+    // ⏰ Clock-in Endpoint: Updates Existing Attendance Record
     @PostMapping("/clock-in")
     public Attendance clockIn(@RequestParam Long userId) {
         return attendanceService.clockIn(userId);
@@ -24,8 +25,10 @@ public class AttendanceController {
         return attendanceService.clockOut(userId);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Attendance> getUserAttendance(@PathVariable Long userId) {
-        return attendanceService.getUserAttendance(userId);
+    // 📅 View All Attendance Records for a User
+    @GetMapping("/view/{userId}")
+    public List<Attendance> viewAttendanceByUser(@PathVariable Long userId) {
+        return attendanceService.viewAttendanceByUser(userId);
     }
+
 }

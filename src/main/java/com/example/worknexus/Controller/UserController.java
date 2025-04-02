@@ -46,4 +46,10 @@ public class UserController {
     public List<User> viewAllUsers(){
         return userService.viewAllUsers();
     }
+
+    @PutMapping("/update-role")
+    public String updateUserRole(@RequestParam Long id, @RequestParam String role) {
+        return userService.updateUserRole(id, role);
+    }
+
 }
