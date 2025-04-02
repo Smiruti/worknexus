@@ -1,5 +1,6 @@
 package com.example.worknexus.Controller;
 
+import com.example.worknexus.Entity.User;
 import com.example.worknexus.Service.CloudinaryService;
 import com.example.worknexus.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -33,5 +35,15 @@ public class UserController {
         } catch (IOException e) {
             return "Error uploading file";
         }
+    }
+
+    @GetMapping("/{id}")
+    public User viewUserById(@PathVariable Long id) {
+        return userService.viewUserById(id);
+    }
+
+    @GetMapping("/all")
+    public List<User> viewAllUsers(){
+        return userService.viewAllUsers();
     }
 }

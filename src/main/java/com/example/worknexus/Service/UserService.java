@@ -5,6 +5,7 @@ import com.example.worknexus.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,5 +44,13 @@ public class UserService {
             return "Profile picture updated successfully";
         }
         return "User not found";
+    }
+
+    public User viewUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public List<User> viewAllUsers() {
+        return userRepository.findAll();
     }
 }
