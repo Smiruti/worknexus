@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Entity
 public class LeaveRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +16,18 @@ public class LeaveRequest {
     private LocalDate endDate;
     private String status; // PENDING, APPROVED, REJECTED
     private LocalDateTime requestDate;
+
+    public LeaveRequest() {
+    }
+
+    public LeaveRequest(Long id, Long userId, LocalDate startDate, LocalDate endDate, String status, LocalDateTime requestDate) {
+        this.id = id;
+        this.userId = userId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.requestDate = requestDate;
+    }
 
     public Long getId() {
         return id;

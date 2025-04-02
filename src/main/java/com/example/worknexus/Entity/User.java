@@ -15,6 +15,19 @@ public class User {
     private String role;  // EMPLOYEE or ADMIN
     private String profilePicUrl;
 
+    public User() {
+    }
+
+    public User(Long id, String name, String email, String mobile, String password, String role, String profilePicUrl) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobile = mobile;
+        this.password = password;
+        this.role = role;
+        this.profilePicUrl = profilePicUrl;
+    }
+
     public Long getId() {
         return id;
     }

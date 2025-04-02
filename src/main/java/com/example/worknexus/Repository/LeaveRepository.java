@@ -1,12 +1,12 @@
 package com.example.worknexus.Repository;
 
-import com.example.worknexus.Entity.Attendance;
+import com.example.worknexus.Entity.LeaveRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
-    List<Attendance> findByUserId(Long userId);
+public interface LeaveRepository extends JpaRepository<LeaveRequest, Long> {
+    List<LeaveRequest> findByUserId(Long userId);
 }

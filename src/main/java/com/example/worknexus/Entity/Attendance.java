@@ -14,6 +14,17 @@ public class Attendance {
     private LocalDateTime clockIn;
     private LocalDateTime clockOut;
 
+    public Attendance() {
+
+    }
+
+    public Attendance(Long id, Long userId, LocalDateTime clockIn, LocalDateTime clockOut) {
+        this.id = id;
+        this.userId = userId;
+        this.clockIn = clockIn;
+        this.clockOut = clockOut;
+    }
+
     public Long getId() {
         return id;
     }
