@@ -85,4 +85,10 @@ public class LeaveService {
     public List<LeaveRequest> getUserLeaveHistory(Long userId) {
         return leaveRepository.findByUserId(userId);
     }
+
+    // Get all leave requests
+    public List<LeaveRequest> getAllLeaveRequests() {
+        return leaveRepository.findAll();
+    }
+
 }

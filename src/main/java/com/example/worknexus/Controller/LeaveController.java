@@ -34,4 +34,11 @@ public class LeaveController {
     public List<LeaveRequest> getUserLeaveHistory(@PathVariable Long userId) {
         return leaveService.getUserLeaveHistory(userId);
     }
+
+    // View all leave requests (Admin only)
+    @GetMapping("/all")
+    public List<LeaveRequest> viewAllRequests() {
+        return leaveService.getAllLeaveRequests();
+    }
+
 }
