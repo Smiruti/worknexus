@@ -16,20 +16,18 @@ public class LeaveController {
     private LeaveService leaveService;
 
     @PostMapping("/request")
-    public LeaveRequest requestLeave(@RequestParam Long userId,
-                                     @RequestParam String startDate,
-                                     @RequestParam String endDate) {
-        return leaveService.requestLeave(userId, LocalDate.parse(startDate), LocalDate.parse(endDate));
+    public String requestLeave(@RequestParam Long userId, @RequestParam String leaveDate) {
+        return leaveService.requestLeave(userId, LocalDate.parse(leaveDate));
     }
 
     @PostMapping("/approve/{leaveId}")
-    public LeaveRequest approveLeave(@PathVariable Long leaveId) {
-        return leaveService.approveLeave(leaveId);
+    public String approveLeave(@PathVariable Long leaveId, @RequestParam Long adminId) {
+        return leaveService.approveLeave(leaveId, adminId);
     }
 
     @PostMapping("/reject/{leaveId}")
-    public LeaveRequest rejectLeave(@PathVariable Long leaveId) {
-        return leaveService.rejectLeave(leaveId);
+    public String rejectLeave(@PathVariable Long leaveId, @RequestParam Long adminId) {
+        return leaveService.rejectLeave(leaveId, adminId);
     }
 
     @GetMapping("/user/{userId}")

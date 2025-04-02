@@ -13,6 +13,7 @@ public class User {
     private String mobile;
     private String role;  // EMPLOYEE or ADMIN
     private String profilePicUrl;
+    private int leaveBalance = 21;
 
     public User() {
     }
@@ -72,5 +73,13 @@ public class User {
 
     public void setProfilePicUrl(String profilePicUrl) {
         this.profilePicUrl = profilePicUrl;
+    }
+
+    public int getLeaveBalance() {
+        return leaveBalance;
+    }
+
+    public void setLeaveBalance(int leaveBalance) {
+        this.leaveBalance = leaveBalance;
     }
 }
