@@ -31,4 +31,11 @@ public class AttendanceController {
         return attendanceService.viewAttendanceByUser(userId);
     }
 
+    // ⏰ Manually Trigger Attendance Creation
+    @GetMapping("/create-daily")
+    public String createDailyAttendance() {
+        attendanceService.createDailyAttendance();
+        return "Attendance records for today created successfully!";
+    }
+
 }
