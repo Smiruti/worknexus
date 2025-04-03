@@ -50,6 +50,11 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+
     public List<User> viewAllUsers() {
         return userRepository.findAll();
     }

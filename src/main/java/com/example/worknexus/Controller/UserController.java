@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
@@ -42,6 +43,11 @@ public class UserController {
         return userService.viewUserById(id);
     }
 
+    @GetMapping("/find-by-email")
+    public User findUserByEmail(@RequestParam String email) {
+        return userService.findUserByEmail(email);
+    }
+    
     @GetMapping("/all")
     public List<User> viewAllUsers(){
         return userService.viewAllUsers();
