@@ -41,27 +41,48 @@ public class AttendanceService {
 //    }
 
     // 🕛 Scheduled Task to Auto-Update Attendance Status at 11:59 PM IST
-    @Scheduled(cron = "0 59 23 * * ?", zone = "Asia/Kolkata")
-    public void updateDailyAttendanceStatus() {
-        LocalDate today = LocalDate.now();
-        List<Attendance> attendances = attendanceRepository.findAll();
+//    @Scheduled(cron = "0 59 23 * * ?", zone = "Asia/Kolkata")
+//    public void updateDailyAttendanceStatus() {
+//        LocalDate today = LocalDate.now();
+//        List<Attendance> attendances = attendanceRepository.findAll();
+//
+//        for (Attendance attendance : attendances) {
+//            if (attendance.getAttendanceDate().equals(today)) {
+//                // If clock-in exists, mark as PRESENT; otherwise, remain ABSENT
+//                if (attendance.getClockIn() != null) {
+//                    attendance.setStatus("PRESENT");
+//                } else {
+//                    attendance.setStatus("ABSENT");
+//                }
+//                attendanceRepository.save(attendance);
+//            }
+//        }
+//    }
+//
 
-        for (Attendance attendance : attendances) {
-            if (attendance.getAttendanceDate().equals(today)) {
-                // If clock-in exists, mark as PRESENT; otherwise, remain ABSENT
-                if (attendance.getClockIn() != null) {
-                    attendance.setStatus("PRESENT");
-                } else {
-                    attendance.setStatus("ABSENT");
-                }
+
+    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Kolkata")
+    public void createDailyAttendance() {
+        System.out.println("Running Scheduled Task: Creating Attendance Records for " + LocalDate.now());
+
+        List<User> allUsers = userRepository.findAll();
+        LocalDate today = LocalDate.now();
+
+        for (User user : allUsers) {
+            Optional<Attendance> existingAttendance = attendanceRepository.findByUserAndAttendanceDate(user, today);
+            if (existingAttendance.isEmpty()) {
+                Attendance attendance = new Attendance();
+                attendance.setUser(user);
+                attendance.setAttendanceDate(today);
+                attendance.setStatus("ABSENT"); // Default status
                 attendanceRepository.save(attendance);
+                System.out.println("Created attendance for: " + user.getId());
             }
         }
     }
 
-    // ⏰ Clock-In Method
-    public Attendance clockIn(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public Attendance clockIn(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isEmpty()) {
             throw new RuntimeException("User not found");
         }
@@ -80,13 +101,12 @@ public class AttendanceService {
         }
 
         attendance.setClockIn(LocalDateTime.now());
-        attendance.setStatus("PRESENT"); // Automatically set to PRESENT on clock-in
+        attendance.setStatus("PRESENT");
         return attendanceRepository.save(attendance);
     }
 
-    // ⏰ Clock-Out Method
-    public Attendance clockOut(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public Attendance clockOut(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isEmpty()) {
             throw new RuntimeException("User not found");
         }
@@ -108,30 +128,18 @@ public class AttendanceService {
         return attendanceRepository.save(attendance);
     }
 
-    // 📅 View All Attendance Records for a User
-    public List<Attendance> viewAttendanceByUser(Long userId) {
-        return attendanceRepository.findByUser(userRepository.findById(userId)
+    public List<Attendance> viewAttendanceByUser(String email) {
+        return attendanceRepository.findByUser(userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found")));
     }
 
-    @Scheduled(cron = "0 0 0 * * ?", zone = "Asia/Kolkata")
-    public void createDailyAttendance() {
-        System.out.println("Running Scheduled Task: Creating Attendance Records for " + LocalDate.now());
-
-        List<User> allUsers = userRepository.findAll();
+    public List<Attendance> getTodayAttendanceStatus() {
         LocalDate today = LocalDate.now();
-
-        for (User user : allUsers) {
-            Optional<Attendance> existingAttendance = attendanceRepository.findByUserAndAttendanceDate(user, today);
-            if (existingAttendance.isEmpty()) {
-                Attendance attendance = new Attendance();
-                attendance.setUser(user);
-                attendance.setAttendanceDate(today);
-                attendance.setStatus("ABSENT"); // Default status
-                attendanceRepository.save(attendance);
-                System.out.println("Created attendance for: " + user.getId());
-            }
-        }
+        return attendanceRepository.findAll()
+                .stream()
+                .filter(attendance -> attendance.getAttendanceDate().equals(today))
+                .toList();
     }
+
 
 }

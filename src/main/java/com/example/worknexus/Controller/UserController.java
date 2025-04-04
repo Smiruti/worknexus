@@ -47,7 +47,7 @@ public class UserController {
     public User findUserByEmail(@RequestParam String email) {
         return userService.findUserByEmail(email);
     }
-    
+
     @GetMapping("/all")
     public List<User> viewAllUsers(){
         return userService.viewAllUsers();

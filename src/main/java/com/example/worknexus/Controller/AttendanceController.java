@@ -9,33 +9,36 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/attendance")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AttendanceController {
 
     @Autowired
     private AttendanceService attendanceService;
 
-    // ⏰ Clock-in Endpoint: Updates Existing Attendance Record
     @PostMapping("/clock-in")
-    public Attendance clockIn(@RequestParam Long userId) {
-        return attendanceService.clockIn(userId);
+    public Attendance clockIn(@RequestParam String email) {
+        return attendanceService.clockIn(email);
     }
 
     @PostMapping("/clock-out")
-    public Attendance clockOut(@RequestParam Long userId) {
-        return attendanceService.clockOut(userId);
+    public Attendance clockOut(@RequestParam String email) {
+        return attendanceService.clockOut(email);
     }
 
-    // 📅 View All Attendance Records for a User
-    @GetMapping("/view/{userId}")
-    public List<Attendance> viewAttendanceByUser(@PathVariable Long userId) {
-        return attendanceService.viewAttendanceByUser(userId);
+    @GetMapping("/view/{email}")
+    public List<Attendance> viewAttendanceByUser(@PathVariable String email) {
+        return attendanceService.viewAttendanceByUser(email);
     }
 
-    // ⏰ Manually Trigger Attendance Creation
     @GetMapping("/create-daily")
     public String createDailyAttendance() {
         attendanceService.createDailyAttendance();
         return "Attendance records for today created successfully!";
+    }
+
+    @GetMapping("/today-status")
+    public List<Attendance> getTodayAttendanceStatus() {
+        return attendanceService.getTodayAttendanceStatus();
     }
 
 }

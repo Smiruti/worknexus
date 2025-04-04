@@ -19,9 +19,8 @@ public class LeaveService {
     @Autowired
     private UserRepository userRepository;
 
-    // Request Leave
-    public String requestLeave(Long userId, LocalDate leaveDate) {
-        User user = userRepository.findById(userId)
+    public String requestLeave(String email, LocalDate leaveDate) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (user.getLeaveBalance() <= 0) {
@@ -33,9 +32,8 @@ public class LeaveService {
         return "Leave request submitted successfully.";
     }
 
-    // Approve Leave (Only Admins)
-    public String approveLeave(Long leaveId, Long adminId) {
-        User admin = userRepository.findById(adminId)
+    public String approveLeave(Long leaveId, String adminEmail) {
+        User admin = userRepository.findByEmail(adminEmail)
                 .orElseThrow(() -> new RuntimeException("Admin not found"));
         if (!"ADMIN".equals(admin.getRole())) {
             return "Only ADMIN can approve leave requests.";
@@ -61,9 +59,8 @@ public class LeaveService {
         return "Leave request approved.";
     }
 
-    // Reject Leave
-    public String rejectLeave(Long leaveId, Long adminId) {
-        User admin = userRepository.findById(adminId)
+    public String rejectLeave(Long leaveId, String adminEmail) {
+        User admin = userRepository.findByEmail(adminEmail)
                 .orElseThrow(() -> new RuntimeException("Admin not found"));
         if (!"ADMIN".equals(admin.getRole())) {
             return "Only ADMIN can reject leave requests.";
@@ -81,9 +78,10 @@ public class LeaveService {
         return "Leave request rejected.";
     }
 
-    // Get Leave History for a User
-    public List<LeaveRequest> getUserLeaveHistory(Long userId) {
-        return leaveRepository.findByUserId(userId);
+    public List<LeaveRequest> getUserLeaveHistory(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return leaveRepository.findByUserId(user.getId());
     }
 
     // Get all leave requests
