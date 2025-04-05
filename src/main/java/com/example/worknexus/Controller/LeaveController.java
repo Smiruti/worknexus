@@ -17,8 +17,10 @@ public class LeaveController {
     private LeaveService leaveService;
 
     @PostMapping("/request")
-    public String requestLeave(@RequestParam String email, @RequestParam String leaveDate) {
-        return leaveService.requestLeave(email, LocalDate.parse(leaveDate));
+    public String requestLeave(@RequestParam String email,
+                               @RequestParam String leaveDate,
+                               @RequestParam String reason) {
+        return leaveService.requestLeave(email, LocalDate.parse(leaveDate), reason);
     }
 
     @PostMapping("/approve/{leaveId}")

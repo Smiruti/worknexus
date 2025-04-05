@@ -19,7 +19,7 @@ public class LeaveService {
     @Autowired
     private UserRepository userRepository;
 
-    public String requestLeave(String email, LocalDate leaveDate) {
+    public String requestLeave(String email, LocalDate leaveDate, String reason) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -27,7 +27,7 @@ public class LeaveService {
             return "You have exhausted your leave balance.";
         }
 
-        LeaveRequest leaveRequest = new LeaveRequest(user, leaveDate, "PENDING", LocalDateTime.now());
+        LeaveRequest leaveRequest = new LeaveRequest(user, leaveDate, "PENDING",reason, LocalDateTime.now());
         leaveRepository.save(leaveRequest);
         return "Leave request submitted successfully.";
     }
