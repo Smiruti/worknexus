@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/work-history")
-@CrossOrigin(origins = "http://localhost:5173")
 public class WorkHistoryController {
 
     @Autowired
